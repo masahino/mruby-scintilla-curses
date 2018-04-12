@@ -4,6 +4,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
 
   def spec.download_scintilla
     require 'open-uri'
+    require 'openssl'
     scintilla_url = "https://downloads.sourceforge.net/scintilla/scintilla380.tgz"
     scintilla_build_root = "#{build_dir}/scintilla/"
     scintilla_dir = "#{scintilla_build_root}/scintilla380"
@@ -13,7 +14,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
 
     unless File.exists?(scintilla_a)
       unless Dir.exist?(scintilla_dir) 
-        open(scintilla_url, "r") do |http|
+        open(scintilla_url, :ssl_verify_mode => OpenSSL::SSL::VERIFY_NONE) do |http|
           scintilla_tar = http.read
           FileUtils.mkdir_p scintilla_build_root
           IO.popen("tar xfz - -C #{filename scintilla_build_root}", "w") do |f|
