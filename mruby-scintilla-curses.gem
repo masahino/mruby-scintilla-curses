@@ -1,0 +1,6 @@
+name: mruby-scintilla-curses
+description: scintilla/curses for mruby
+author: masahino
+website: https://github.com/masahino/mruby-scintilla-curses
+protocol: git
+repository: https://github.com/masahino/mruby-scintilla-curses.git
