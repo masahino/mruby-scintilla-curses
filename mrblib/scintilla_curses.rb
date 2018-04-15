@@ -1,4 +1,4 @@
 module Scintilla
-class ScintillaBase
-end
+  class ScintillaBase
+  end
 end
