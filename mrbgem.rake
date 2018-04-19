@@ -22,7 +22,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
           end
         end
       end
-      curses_flag = "-D_XOPEN_SOURCE_EXTENDED"
+      curses_flag = "-D_XOPEN_SOURCE"
       if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-w64-mingw32 i686-w64-mingw32).include?(build.host_target)
         curses_flag += " -I/usr/#{build.host_target}/include/ncurses"
       end
