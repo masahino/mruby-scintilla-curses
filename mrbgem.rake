@@ -32,6 +32,9 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
       sh %Q{(cd #{scintilla_curses_dir} && make CXX=#{build.cxx.command} AR=#{build.archiver.command} CURSES_FLAGS="#{curses_flag}")}
     end
     self.linker.flags_before_libraries << scintilla_a
+    self.linker.libraries << "stdc++"
+    self.linker.libraries << "ncurses"
+    self.linker.libraries << "panel"
     [self.cc, self.cxx, self.objc, self.mruby.cc, self.mruby.cxx, self.mruby.objc].each do |cc|
       cc.include_paths << scintilla_dir+"/include"
       cc.include_paths << scintilla_dir+"/src"
