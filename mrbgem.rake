@@ -1,6 +1,7 @@
 MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
   spec.license = 'MIT'
   spec.authors = 'masahino'
+  spec.add_dependency 'mruby-curses', :github => 'jbreeden/mruby-curses'
   spec.add_dependency 'mruby-scintilla-base', :github => 'masahino/mruby-scintilla-base'
 
   def spec.download_scintilla
