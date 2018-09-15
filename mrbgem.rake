@@ -27,6 +27,9 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
       if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-w64-mingw32 i686-w64-mingw32).include?(build.host_target)
         curses_flag += " -I/usr/#{build.host_target}/include/ncurses"
       end
+      if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-apple-darwin14).include?(build.host_target)
+        curses_flag += " -stdlib=libc++"
+      end
       if build.kind_of?(MRuby::CrossBuild)
         curses_flag += " #{build.cxx.all_flags.gsub('\\','\\\\').gsub('"', '\\"')}"
       end
