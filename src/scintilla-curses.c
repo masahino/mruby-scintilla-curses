@@ -6,6 +6,7 @@
 #include "mruby/string.h"
 #include "mruby/array.h"
 #include "mruby/variable.h"
+#include "mruby/hash.h"
 
 #include "Scintilla.h"
 #include "ScintillaCurses.h"
@@ -29,10 +30,20 @@ struct mrb_scintilla_doc_data {
 
 static struct mrb_scintilla_data *scintilla_list = NULL;
 
+static void scintilla_curses_free(mrb_state *mrb, void *ptr) {
+// fprintf(stderr, "scintilla_curses_free %p\n", ptr);
+  if (ptr != NULL) {
+    scintilla_delete((Scintilla *)ptr);
+  }
+}
+
+const static struct mrb_data_type mrb_scintilla_curses_type = { "ScintillaCurses", scintilla_curses_free };
+const static struct mrb_data_type mrb_document_type = { "Document", mrb_free };
+
 void scnotification(Scintilla *view, int msg, void *lParam, void *wParam) {
   struct mrb_scintilla_data *scdata = scintilla_list;
   struct SCNotification *n = (struct SCNotification *)lParam;
-  mrb_value callback;
+  mrb_value callback, scn;
 
   while (scdata != NULL) {
     if (scdata->view == view) {
@@ -44,9 +55,58 @@ void scnotification(Scintilla *view, int msg, void *lParam, void *wParam) {
     fprintf(stderr, "scdata = NULL\n");
     return;
   }
+
   if (scdata->has_callback == TRUE) {
     callback = mrb_iv_get(scmrb, scdata->view_obj, mrb_intern_cstr(scmrb, "notification"));
-    mrb_yield(scmrb, callback, mrb_fixnum_value(n->nmhdr.code));
+    scn = mrb_hash_new(scmrb);
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "code"), mrb_fixnum_value(n->nmhdr.code));
+    // Sci_Position position
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "position"), mrb_fixnum_value(n->position));
+    // int ch
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "ch"), 
+      mrb_funcall(scmrb, mrb_fixnum_value(n->ch), "chr", 0));
+    // int modifiers
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "modifiers"), mrb_fixnum_value(n->modifiers));
+    // int modificationType
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "modification_type"),
+      mrb_fixnum_value(n->modificationType));
+    // const char *text
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "text"), mrb_str_new_cstr(scmrb, n->text));
+    // Sci_Position length
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "length"), mrb_fixnum_value(n->length));
+    // Sci_Position linesAdded
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "lines_added"), mrb_fixnum_value(n->linesAdded));
+    // int message
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "message"), mrb_fixnum_value(n->message));
+    // uptr_t wParam
+    // sptr_t lParam
+    // Sci_Position line
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "line"), mrb_fixnum_value(n->line));
+    // int foldLevelNow
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "fold_level_now"),
+      mrb_fixnum_value(n->foldLevelNow));
+    // int foldLevelPrev
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "fold_level_prev"),
+      mrb_fixnum_value(n->foldLevelPrev));
+    // int margin
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "margin"), mrb_fixnum_value(n->margin));
+    // int listType
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "list_type"), mrb_fixnum_value(n->listType));
+    // int x
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "x"), mrb_fixnum_value(n->x));
+    // int y
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "y"), mrb_fixnum_value(n->y));
+    // int token
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "token"), mrb_fixnum_value(n->token));
+    // int annotationLinesAdded
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "annotation_lines_added"),
+      mrb_fixnum_value(n->annotationLinesAdded));
+    // int updated
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "updated"), mrb_fixnum_value(n->updated));
+    // listCompletionMethod
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "list_completion_method"),
+      mrb_fixnum_value(n->listCompletionMethod));
+    mrb_yield(scmrb, callback, scn);
   }
   /*
     struct SCNotification *scn = (struct SCNotification *)lParam;
@@ -54,16 +114,6 @@ void scnotification(Scintilla *view, int msg, void *lParam, void *wParam) {
   */
 }
 
-static void scintilla_curses_free(mrb_state *mrb, void *ptr) {
-/* fprintf(stderr, "scintilla_curses_free %p\n", ptr); */
-  if (ptr != NULL) {
-    scintilla_delete((Scintilla *)ptr);
-  }
-}
-
-const static struct mrb_data_type mrb_scintilla_curses_type = { "ScintillaCurses", scintilla_curses_free };
-
-const static struct mrb_data_type mrb_document_type = { "Document", mrb_free };
 
 static mrb_value
 mrb_scintilla_curses_initialize(mrb_state *mrb, mrb_value self)
