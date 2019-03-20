@@ -63,8 +63,7 @@ void scnotification(Scintilla *view, int msg, void *lParam, void *wParam) {
     // Sci_Position position
     mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "position"), mrb_fixnum_value(n->position));
     // int ch
-    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "ch"), 
-      mrb_funcall(scmrb, mrb_fixnum_value(n->ch), "chr", 0));
+    mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "ch"), mrb_fixnum_value(n->ch));
     // int modifiers
     mrb_hash_set(scmrb, scn, mrb_str_new_cstr(scmrb, "modifiers"), mrb_fixnum_value(n->modifiers));
     // int modificationType
