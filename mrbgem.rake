@@ -6,9 +6,9 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
 
   def spec.download_scintilla
     require 'open-uri'
-    scintilla_url = "https://downloads.sourceforge.net/scintilla/scintilla3101.tgz"
+    scintilla_url = "https://downloads.sourceforge.net/scintilla/scintilla3106.tgz"
     scintilla_build_root = "#{build_dir}/scintilla/"
-    scintilla_dir = "#{scintilla_build_root}/scintilla3101"
+    scintilla_dir = "#{scintilla_build_root}/scintilla3106"
     scintilla_a = "#{scintilla_dir}/bin/scintilla.a"
     scintilla_curses_dir = "#{scintilla_dir}/curses"
     curses_flag = ""
