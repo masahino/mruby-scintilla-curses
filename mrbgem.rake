@@ -34,6 +34,8 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
       if build.kind_of?(MRuby::CrossBuild)
         curses_flag += " #{build.cxx.all_flags.gsub('\\','\\\\').gsub('"', '\\"')}"
       end
+      if ENV['MSYSTEM'] != nil
+        curses_flag += " -I/usr/#{ENV['MSYSTEM'].downcase}/include/ncurses"
       sh %Q{(cd #{scintilla_curses_dir} && make CXX=#{build.cxx.command} AR=#{build.archiver.command} CURSES_FLAGS="#{curses_flag}")}
     end
     self.linker.flags_before_libraries << scintilla_a
