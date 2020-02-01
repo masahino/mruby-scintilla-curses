@@ -35,7 +35,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
         curses_flag += " #{build.cxx.all_flags.gsub('\\','\\\\').gsub('"', '\\"')}"
       end
       if ENV['MSYSTEM'] != nil
-        curses_flag += " -I/usr/#{ENV['MSYSTEM'].downcase}/include/ncurses"
+        curses_flag += " -I/#{ENV['MINGW_PREFIX']}/include/ncurses"
       end
       sh %Q{(cd #{scintilla_curses_dir} && make CXX=#{build.cxx.command} AR=#{build.archiver.command} CURSES_FLAGS="#{curses_flag}")}
     end
