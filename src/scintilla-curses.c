@@ -146,6 +146,11 @@ mrb_scintilla_curses_initialize(mrb_state *mrb, mrb_value self)
     }
     tmp->next = scdata;
   }
+#ifdef PDCURSES
+#ifdef PDC_VER_MAJOR
+  PDC_set_function_key(FUNCTION_KEY_PASTE, 0);
+#endif
+#endif
   return self;
 }
 
