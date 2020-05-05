@@ -47,7 +47,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
       self.linker.libraries << "stdc++"
     end
     if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-w64-mingw32 i686-w64-mingw32).include?(build.host_target)
-      self.linker.libraries << "curses"
+      self.linker.libraries << "pdcurses"
     elsif ENV['MSYSTEM'] != nil
       self.cc.include_paths << "#{ENV['MINGW_PREFIX']}/include/pdcurses"
       self.linker.libraries << "pdcurses"
