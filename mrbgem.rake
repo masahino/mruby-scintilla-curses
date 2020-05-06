@@ -26,7 +26,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
       end
       curses_flag = "-D_XOPEN_SOURCE"
       if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-w64-mingw32 i686-w64-mingw32).include?(build.host_target)
-        curses_flag += " -I/usr/#{build.host_target}/include/ncurses"
+        curses_flag += " -I/usr/#{build.host_target}/include/pdcurses"
       end
       if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-apple-darwin14).include?(build.host_target)
         curses_flag += " -stdlib=libc++"
@@ -47,7 +47,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
       self.linker.libraries << "stdc++"
     end
     if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-w64-mingw32 i686-w64-mingw32).include?(build.host_target)
-      self.linker.libraries << "curses"
+      self.linker.libraries << "pdcurses"
     elsif ENV['MSYSTEM'] != nil
       self.cc.include_paths << "#{ENV['MINGW_PREFIX']}/include/pdcurses"
       self.linker.libraries << "pdcurses"
