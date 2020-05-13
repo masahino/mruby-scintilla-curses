@@ -40,9 +40,8 @@ static void scintilla_curses_free(mrb_state *mrb, void *ptr) {
 const static struct mrb_data_type mrb_scintilla_curses_type = { "ScintillaCurses", scintilla_curses_free };
 const static struct mrb_data_type mrb_document_type = { "Document", mrb_free };
 
-void scnotification(Scintilla *view, int msg, void *lParam, void *wParam) {
+void scnotification(Scintilla *view, int msg, SCNotification *n, void *userdata) {
   struct mrb_scintilla_data *scdata = scintilla_list;
-  struct SCNotification *n = (struct SCNotification *)lParam;
   mrb_value callback, scn;
 
   while (scdata != NULL) {
@@ -117,7 +116,7 @@ void scnotification(Scintilla *view, int msg, void *lParam, void *wParam) {
 static mrb_value
 mrb_scintilla_curses_initialize(mrb_state *mrb, mrb_value self)
 {
-  Scintilla *sci = scintilla_new(scnotification);
+  Scintilla *sci = scintilla_new(scnotification, mrb);
   mrb_value callback;
   //     struct mrb_scintilla_data *scdata = mrb_malloc(mrb, sizeof(struct mrb_scintilla_data));
   struct mrb_scintilla_data *scdata = (struct mrb_scintilla_data *)malloc(sizeof(struct mrb_scintilla_data));
