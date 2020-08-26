@@ -3,11 +3,11 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
   spec.authors = 'masahino'
 #  spec.add_dependency 'mruby-curses', :github => 'jbreeden/mruby-curses'
   spec.add_dependency 'mruby-scintilla-base', :github => 'masahino/mruby-scintilla-base'
-  spec.version = '3.20.0'
+  spec.version = '3.21.0'
 
   def spec.download_scintilla
     require 'open-uri'
-    scintilla_ver = "3200"
+    scintilla_ver = "3210"
     scintilla_url = "https://downloads.sourceforge.net/scintilla/scintilla#{scintilla_ver}.tgz"
     scintilla_build_root = "#{build_dir}/scintilla/"
     scintilla_dir = "#{scintilla_build_root}/scintilla#{scintilla_ver}"
@@ -17,7 +17,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
 
     unless File.exists?(scintilla_a)
       unless Dir.exist?(scintilla_dir) 
-        open(scintilla_url) do |http|
+        URI.open(scintilla_url) do |http|
           scintilla_tar = http.read
           FileUtils.mkdir_p scintilla_build_root
           IO.popen("tar xfz - -C #{filename scintilla_build_root}", "wb") do |f|
