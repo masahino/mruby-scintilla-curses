@@ -170,15 +170,13 @@ mrb_scintilla_curses_get_clipboard(mrb_state *mrb, mrb_value self)
 {
   Scintilla *sci;
   char *buffer = NULL;
+  int len;
   mrb_int size;
   mrb_value ret_ary = mrb_ary_new(mrb);
 
   sci = (Scintilla *)DATA_PTR(self);
-  size = scintilla_get_clipboard(sci, buffer);
-  mrb_ary_push(mrb, ret_ary, mrb_fixnum_value(size));
-  mrb_ary_push(mrb, ret_ary, mrb_str_new_cstr(mrb, buffer));
-
-  return ret_ary;
+  buffer = scintilla_get_clipboard(sci, &len);
+  return mrb_str_new(mrb, buffer, len);
 }
 
 static mrb_value
@@ -612,7 +610,7 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
 
   mrb_define_method(mrb, sci, "initialize", mrb_scintilla_curses_initialize, MRB_ARGS_OPT(1));
   mrb_define_method(mrb, sci, "delete", mrb_scintilla_curses_delete, MRB_ARGS_NONE());
-  mrb_define_method(mrb, sci, "get_clipboard", mrb_scintilla_curses_get_clipboard, MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, sci, "get_clipboard", mrb_scintilla_curses_get_clipboard, MRB_ARGS_NONE());
   mrb_define_method(mrb, sci, "get_window", mrb_scintilla_curses_get_window, MRB_ARGS_NONE());
   mrb_define_method(mrb, sci, "noutrefresh", mrb_scintilla_curses_noutrefresh, MRB_ARGS_NONE());
   mrb_define_method(mrb, sci, "refresh", mrb_scintilla_curses_refresh, MRB_ARGS_NONE());
