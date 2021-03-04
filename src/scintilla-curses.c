@@ -171,8 +171,6 @@ mrb_scintilla_curses_get_clipboard(mrb_state *mrb, mrb_value self)
   Scintilla *sci;
   char *buffer = NULL;
   int len;
-  mrb_int size;
-  mrb_value ret_ary = mrb_ary_new(mrb);
 
   sci = (Scintilla *)DATA_PTR(self);
   buffer = scintilla_get_clipboard(sci, &len);
@@ -596,10 +594,10 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
 
   scim = mrb_module_get(mrb, "Scintilla");
 
-#if !_WIN32
-  mrb_define_const(mrb, scim, "PLATFORM", mrb_symbol_value(mrb_intern_cstr(mrb, "CURSES")));
-#else
+#ifdef _WIN32
   mrb_define_const(mrb, scim, "PLATFORM", mrb_symbol_value(mrb_intern_cstr(mrb, "CURSES_WIN32")));
+#else
+  mrb_define_const(mrb, scim, "PLATFORM", mrb_symbol_value(mrb_intern_cstr(mrb, "CURSES")));
 #endif
 
   sci = mrb_define_class_under(mrb, scim, "ScintillaCurses", mrb_class_get_under(mrb, scim, "ScintillaBase"));
