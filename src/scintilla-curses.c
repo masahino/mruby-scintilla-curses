@@ -546,6 +546,7 @@ mrb_scintilla_curses_margin_get_text(mrb_state *mrb, mrb_value self)
   len = scintilla_send_message(sci, SCI_MARGINGETTEXT, (uptr_t)line, (sptr_t)0) + 1;
   text = (char *)mrb_malloc(mrb, sizeof(char)*len);
   len = scintilla_send_message(sci, SCI_MARGINGETTEXT, (uptr_t)line, (sptr_t)text);
+  text[len-1] = '\0';
   return mrb_str_new_cstr(mrb, text);
 }
 
