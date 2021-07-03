@@ -10,6 +10,7 @@
 
 #include "Scintilla.h"
 #include "ScintillaCurses.h"
+#include "lexilla.h"
 
 #define DONE mrb_gc_arena_restore(mrb, 0)
 
@@ -386,7 +387,10 @@ mrb_scintilla_curses_set_lexer_language(mrb_state *mrb, mrb_value self)
   Scintilla *sci = (Scintilla *)DATA_PTR(self);
   char *lang = NULL;
   mrb_get_args(mrb, "z", &lang);
-  scintilla_send_message(sci, SCI_SETLEXERLANGUAGE, 0, (sptr_t)lang);
+
+  ILexer5 *pLexer = CreateLexer(lang);
+//  scintilla_send_message(sci, SCI_SETLEXERLANGUAGE, 0, (sptr_t)lang);
+  scintilla_send_message(sci, SCI_SETILEXER, 0, (sptr_t)pLexer);
   return mrb_nil_value();
 }
 
