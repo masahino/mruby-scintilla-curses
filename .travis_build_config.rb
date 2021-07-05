@@ -4,7 +4,7 @@ MRuby::Build.new do |conf|
   conf.gem "#{MRUBY_ROOT}/mrbgems/mruby-eval"
 #  conf.gem :github => 'jbreeden/mruby-curses'
 
-  conf.gem :github => 'masahino/mruby-scintilla-base', :branch => "scintilla5" do |g|
+  conf.gem :github => 'masahino/mruby-scintilla-base' do |g|
     g.download_scintilla
   end
 
