@@ -10,7 +10,7 @@
 
 #include "Scintilla.h"
 #include "ScintillaCurses.h"
-#include "lexilla.h"
+#include "Lexilla.h"
 
 #define DONE mrb_gc_arena_restore(mrb, 0)
 
