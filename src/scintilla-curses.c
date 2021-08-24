@@ -240,6 +240,16 @@ mrb_scintilla_curses_send_key(mrb_state *mrb, mrb_value self)
   return mrb_nil_value();
 }
 
+/* scintilla_update_cursor(sci) */
+static mrb_value
+mrb_scintilla_curses_update_cursor(mrb_state *mrb, mrb_value self)
+{
+  Scintilla *sci = (Scintilla *)DATA_PTR(self);
+
+  scintilla_update_cursor(sci);
+  return mrb_nil_value();
+}
+
 static mrb_value
 mrb_scintilla_curses_send_message(mrb_state *mrb, mrb_value self)
 {
@@ -618,6 +628,7 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
   mrb_define_method(mrb, sci, "noutrefresh", mrb_scintilla_curses_noutrefresh, MRB_ARGS_NONE());
   mrb_define_method(mrb, sci, "refresh", mrb_scintilla_curses_refresh, MRB_ARGS_NONE());
   mrb_define_method(mrb, sci, "send_key", mrb_scintilla_curses_send_key, MRB_ARGS_REQ(5));
+  mrb_define_method(mrb, sci, "update_cursor", mrb_scintilla_curses_update_cursor, MRB_ARGS_NONE());
 
   mrb_define_method(mrb, sci, "send_message", mrb_scintilla_curses_send_message, MRB_ARGS_ARG(1, 2));
 
