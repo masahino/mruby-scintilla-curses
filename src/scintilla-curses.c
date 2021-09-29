@@ -670,7 +670,7 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
   mrb_define_method(mrb, sci, "update_cursor", mrb_scintilla_curses_update_cursor, MRB_ARGS_NONE());
 
   mrb_define_method(mrb, sci, "send_message", mrb_scintilla_curses_send_message, MRB_ARGS_ARG(1, 2));
-  mrb_define_method(mrb, sci, "sci_send_message_get_str", mrb_scintilla_curses_send_message_get_str,
+  mrb_define_method(mrb, sci, "send_message_get_str", mrb_scintilla_curses_send_message_get_str,
     MRB_ARGS_ARG(1, 1));
 
   mrb_define_method(mrb, sci, "send_mouse", mrb_scintilla_curses_send_mouse, MRB_ARGS_REQ(8));
