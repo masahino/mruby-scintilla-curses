@@ -320,6 +320,45 @@ mrb_scintilla_curses_send_message(mrb_state *mrb, mrb_value self)
 }
 
 static mrb_value
+mrb_scintilla_curses_send_message_get_str(mrb_state *mrb, mrb_value self)
+{
+  Scintilla *sci = (Scintilla *)DATA_PTR(self);
+  mrb_value w_param_obj;
+  uptr_t w_param = 0;
+  char *value = NULL;
+  mrb_int i_message, len, argc;
+  argc = mrb_get_args(mrb, "i|o", &i_message, &w_param_obj);
+  if (argc > 1) {
+    switch(mrb_type(w_param_obj)) {
+      case MRB_TT_FIXNUM:
+      w_param = (uptr_t)mrb_fixnum(w_param_obj);
+      break;
+      case MRB_TT_STRING:
+      w_param = (uptr_t)mrb_string_value_ptr(mrb, w_param_obj);
+      break;
+      case MRB_TT_TRUE:
+      w_param = TRUE;
+      break;
+      case MRB_TT_FALSE:
+      w_param = FALSE;
+      break;
+      case MRB_TT_UNDEF:
+      w_param = 0;
+      break;
+      default:
+      mrb_raise(mrb, E_ARGUMENT_ERROR, "invalid parameter");
+      return mrb_nil_value();
+    }
+  }
+
+  len = scintilla_send_message(sci, i_message, w_param, (sptr_t)NULL);
+  value = (char *)mrb_malloc(mrb, sizeof(char)*len);
+
+  len = scintilla_send_message(sci, i_message, w_param, (sptr_t)value);
+  return mrb_str_new(mrb, value, len);
+}
+
+static mrb_value
 mrb_scintilla_curses_send_mouse(mrb_state *mrb, mrb_value self)
 {
   Scintilla *sci = (Scintilla *)DATA_PTR(self);
@@ -631,6 +670,8 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
   mrb_define_method(mrb, sci, "update_cursor", mrb_scintilla_curses_update_cursor, MRB_ARGS_NONE());
 
   mrb_define_method(mrb, sci, "send_message", mrb_scintilla_curses_send_message, MRB_ARGS_ARG(1, 2));
+  mrb_define_method(mrb, sci, "sci_send_message_get_str", mrb_scintilla_curses_send_message_get_str,
+    MRB_ARGS_ARG(1, 1));
 
   mrb_define_method(mrb, sci, "send_mouse", mrb_scintilla_curses_send_mouse, MRB_ARGS_REQ(8));
 
@@ -659,7 +700,7 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
   mrb_define_method(mrb, sci, "sci_get_wordchars", mrb_scintilla_curses_get_wordchars, MRB_ARGS_NONE());
 
   mrb_define_class_method(mrb, sci, "color_pair", mrb_scintilla_curses_color_pair, MRB_ARGS_REQ(2));
-  
+
   mrb_define_const(mrb, scim, "COLOR_BLACK", mrb_fixnum_value(0x000000));
   mrb_define_const(mrb, scim, "COLOR_RED",  mrb_fixnum_value(0x000080));
   mrb_define_const(mrb, scim, "COLOR_GREEN", mrb_fixnum_value(0x008000));
