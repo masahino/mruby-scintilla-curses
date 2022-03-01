@@ -3,13 +3,13 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
   spec.authors = 'masahino'
 #  spec.add_dependency 'mruby-curses', :github => 'jbreeden/mruby-curses'
   spec.add_dependency 'mruby-scintilla-base', :github => 'masahino/mruby-scintilla-base'
-  spec.version = '5.1.4'
+  spec.version = '5.2.1'
 
   def spec.download_scintilla
     require 'open-uri'
-    scintilla_ver = '514'
+    scintilla_ver = '521'
     scinterm_ver = '3.2'
-    lexilla_ver = '513'
+    lexilla_ver = '515'
     scintilla_url = "https://scintilla.org/scintilla#{scintilla_ver}.tgz"
     scinterm_url = "https://github.com/orbitalquark/scinterm/archive/refs/tags/scinterm_#{scinterm_ver}.tar.gz"
     lexilla_url = "https://scintilla.org/lexilla#{lexilla_ver}.tgz"
