@@ -1,0 +1,20 @@
+name: Build & Test
+
+on: [push, pull_request]
+
+jobs:
+  Ubuntu-1804-gcc:
+    runs-on: ubuntu-18.04
+    timeout-minutes: 10
+    env:
+      CC: gcc
+    steps:
+      - uses: actions/checkout@v2.4.0
+      - name: Ruby version
+        run: ruby -v
+      - name: Compiler version
+        run: ${{ env.CC }} --version
+      - name: Build
+        run: rake
+      - name: Test
+        run: rake test
