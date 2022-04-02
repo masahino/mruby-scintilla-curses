@@ -3,13 +3,13 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
   spec.authors = 'masahino'
 #  spec.add_dependency 'mruby-curses', :github => 'jbreeden/mruby-curses'
   spec.add_dependency 'mruby-scintilla-base', :github => 'masahino/mruby-scintilla-base'
-  spec.version = '5.2.1'
+  spec.version = '5.2.2'
 
   def spec.download_scintilla
     require 'open-uri'
-    scintilla_ver = '521'
+    scintilla_ver = '522'
     scinterm_ver = '3.2'
-    lexilla_ver = '515'
+    lexilla_ver = '516'
     scintilla_url = "https://scintilla.org/scintilla#{scintilla_ver}.tgz"
     scinterm_url = "https://github.com/orbitalquark/scinterm/archive/refs/tags/scinterm_#{scinterm_ver}.tar.gz"
     lexilla_url = "https://scintilla.org/lexilla#{lexilla_ver}.tgz"
@@ -83,6 +83,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
         linker.libraries << 'c++'
       else
         linker.libraries << 'stdc++'
+        linker.libraries << 'pthread'
       end
       if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-w64-mingw32 i686-w64-mingw32).include?(build.host_target)
         cc.include_paths << "/usr/#{build.host_target}/include/pdcurses"
