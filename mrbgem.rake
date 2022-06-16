@@ -77,7 +77,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
 
     task :mruby_mrbmacs_curses_with_compile_option do
       linker.flags_before_libraries << scintilla_a
-      linker.flags_before_libraries << lexilla_a
+#      linker.flags_before_libraries << lexilla_a
 
       if build.kind_of?(MRuby::CrossBuild) && %w(x86_64-apple-darwin14).include?(build.host_target)
         linker.libraries << 'c++'
@@ -102,6 +102,6 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
         cc.include_paths << "#{lexilla_dir}/include"
       end
     end
-    file "#{dir}/src/scintilla-curses.c" => [:mruby_mrbmacs_curses_with_compile_option, scintilla_a, lexilla_a]
+    file "#{dir}/src/scintilla-curses.c" => [:mruby_mrbmacs_curses_with_compile_option, scintilla_a, lexilla_h]
   end
 end
