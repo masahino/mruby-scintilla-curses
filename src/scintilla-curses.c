@@ -122,9 +122,8 @@ mrb_scintilla_curses_initialize(mrb_state *mrb, mrb_value self)
   //     struct mrb_scintilla_data *scdata = mrb_malloc(mrb, sizeof(struct mrb_scintilla_data));
   struct mrb_scintilla_data *scdata = (struct mrb_scintilla_data *)malloc(sizeof(struct mrb_scintilla_data));
   struct mrb_scintilla_data *tmp;
-  mrb_int argc;
 
-  argc = mrb_get_args(mrb, "|&", &callback);
+  mrb_get_args(mrb, "|&", &callback);
   DATA_TYPE(self) = &mrb_scintilla_curses_type;
   DATA_PTR(self) = sci;
   scdata->view = sci;
@@ -545,7 +544,7 @@ mrb_scintilla_curses_get_textrange(mrb_state *mrb, mrb_value self)
 {
   Scintilla *sci = (Scintilla *)DATA_PTR(self);
 
-  mrb_int cp_min, cp_max, len;
+  mrb_int cp_min, cp_max;
   struct Sci_TextRange *tr = (struct Sci_TextRange *)mrb_malloc(mrb, sizeof(struct Sci_TextRange));
 
   mrb_get_args(mrb, "ii", &cp_min, &cp_max);
@@ -553,7 +552,7 @@ mrb_scintilla_curses_get_textrange(mrb_state *mrb, mrb_value self)
   tr->chrg.cpMax = cp_max;
   tr->lpstrText = (char *)mrb_malloc(mrb, sizeof(char)*(cp_max-cp_min+2));
 
-  len = scintilla_send_message(sci, SCI_GETTEXTRANGE, 0, (sptr_t)tr);
+  scintilla_send_message(sci, SCI_GETTEXTRANGE, 0, (sptr_t)tr);
   return mrb_str_new_cstr(mrb, tr->lpstrText);
 }
 
