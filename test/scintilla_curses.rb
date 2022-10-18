@@ -36,7 +36,7 @@ assert('SCI_AUTOCSELECT') do
   st = Scintilla::ScintillaCurses.new
   st.SCI_AUTOCSHOW(0, 'aaa bbb ccc')
   st.sci_autoc_select('bbb')
-  assert_equal 1, st.sci_autoc_active
+  assert_equal true, st.sci_autoc_active
 end
 
 assert('SCI_GETTARGETTEXT') do
