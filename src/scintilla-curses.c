@@ -13,6 +13,7 @@
 #include "Lexilla.h"
 
 #define DONE mrb_gc_arena_restore(mrb, 0)
+#define SCI_COLOR_PAIR(f, b) ((b) * ((COLORS < 16) ? 8 : 16) + (f) + 1)
 
 typedef void Scintilla;
 
@@ -473,7 +474,7 @@ mrb_scintilla_curses_send_mouse(mrb_state *mrb, mrb_value self)
   mrb_bool shift, ctrl, alt, ret;
 
   mrb_get_args(mrb, "ifiiibbb", &event, &time, &button, &y, &x, &shift, &ctrl, &alt);
-  ret = scintilla_send_mouse(sci, event, (unsigned int)time, button, y, x, shift, ctrl, alt);
+  ret = scintilla_send_mouse(sci, event, button, y, x, shift, ctrl, alt);
 
   return (ret == TRUE)? mrb_true_value() : mrb_false_value();
 
