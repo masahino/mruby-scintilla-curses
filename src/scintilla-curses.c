@@ -372,6 +372,24 @@ mrb_scintilla_curses_send_message_get_text(mrb_state *mrb, mrb_value self)
 }
 
 static mrb_value
+mrb_scintilla_curses_send_message_get_text_range(mrb_state *mrb, mrb_value self)
+{
+  Scintilla *sci = (Scintilla *)DATA_PTR(self);
+
+  mrb_int i_message, cp_min, cp_max;
+  struct Sci_TextRange *tr = (struct Sci_TextRange *)mrb_malloc(mrb, sizeof(struct Sci_TextRange));
+
+  mrb_get_args(mrb, "iii", &i_message, &cp_min, &cp_max);
+  tr->chrg.cpMin = cp_min;
+  tr->chrg.cpMax = cp_max;
+  tr->lpstrText = (char *)mrb_malloc(mrb, sizeof(char)*(cp_max-cp_min+2));
+
+  scintilla_send_message(sci, i_message, 0, (sptr_t)tr);
+  return mrb_str_new_cstr(mrb, tr->lpstrText);
+}
+
+
+static mrb_value
 mrb_scintilla_curses_send_message_get_curline(mrb_state *mrb, mrb_value self)
 {
   Scintilla *sci = (Scintilla *)DATA_PTR(self);
@@ -541,23 +559,6 @@ mrb_scintilla_curses_touchwin(mrb_state *mrb, mrb_value self)
 }
 
 static mrb_value
-mrb_scintilla_curses_get_textrange(mrb_state *mrb, mrb_value self)
-{
-  Scintilla *sci = (Scintilla *)DATA_PTR(self);
-
-  mrb_int cp_min, cp_max;
-  struct Sci_TextRange *tr = (struct Sci_TextRange *)mrb_malloc(mrb, sizeof(struct Sci_TextRange));
-
-  mrb_get_args(mrb, "ii", &cp_min, &cp_max);
-  tr->chrg.cpMin = cp_min;
-  tr->chrg.cpMax = cp_max;
-  tr->lpstrText = (char *)mrb_malloc(mrb, sizeof(char)*(cp_max-cp_min+2));
-
-  scintilla_send_message(sci, SCI_GETTEXTRANGE, 0, (sptr_t)tr);
-  return mrb_str_new_cstr(mrb, tr->lpstrText);
-}
-
-static mrb_value
 mrb_scintilla_curses_color_pair(mrb_state *mrb, mrb_value self)
 {
   mrb_int f, b;
@@ -599,6 +600,8 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
     MRB_ARGS_ARG(1, 1));
   mrb_define_method(mrb, sci, "send_message_get_text", mrb_scintilla_curses_send_message_get_text,
     MRB_ARGS_REQ(1));
+  mrb_define_method(mrb, sci, "send_message_get_text_range", mrb_scintilla_curses_send_message_get_text_range,
+    MRB_ARGS_REQ(3));
   mrb_define_method(mrb, sci, "send_message_get_curline", mrb_scintilla_curses_send_message_get_curline, MRB_ARGS_NONE());
   mrb_define_method(mrb, sci, "send_message_get_line", mrb_scintilla_curses_send_message_get_line, MRB_ARGS_REQ(1));
   mrb_define_method(mrb, sci, "send_message_get_docpointer", mrb_scintilla_curses_send_message_get_docpointer,
@@ -614,8 +617,6 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
   mrb_define_method(mrb, sci, "move_window", mrb_scintilla_curses_move_window, MRB_ARGS_REQ(2));
   mrb_define_method(mrb, sci, "setpos", mrb_scintilla_curses_setpos, MRB_ARGS_REQ(2));
   mrb_define_method(mrb, sci, "touchwin", mrb_scintilla_curses_touchwin, MRB_ARGS_NONE());
-
-  mrb_define_method(mrb, sci, "sci_get_textrange", mrb_scintilla_curses_get_textrange, MRB_ARGS_REQ(2));
 
   mrb_define_class_method(mrb, sci, "color_pair", mrb_scintilla_curses_color_pair, MRB_ARGS_REQ(2));
 
