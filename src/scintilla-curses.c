@@ -363,11 +363,11 @@ mrb_scintilla_curses_send_message_get_text(mrb_state *mrb, mrb_value self)
 {
   Scintilla *sci = (Scintilla *)DATA_PTR(self);
   char *text = NULL;
-  mrb_int nlen;
+  mrb_int i_message, nlen;
 
-  mrb_get_args(mrb, "i", &nlen);
+  mrb_get_args(mrb, "ii", &i_message, &nlen);
   text = (char *)mrb_malloc(mrb, sizeof(char) * nlen + 1);
-  scintilla_send_message(sci, SCI_GETTEXT, (uptr_t)nlen, (sptr_t)text);
+  scintilla_send_message(sci, i_message, (uptr_t)nlen, (sptr_t)text);
   return mrb_str_new_cstr(mrb, text);
 }
 
@@ -599,7 +599,7 @@ mrb_mruby_scintilla_curses_gem_init(mrb_state* mrb)
   mrb_define_method(mrb, sci, "send_message_get_str", mrb_scintilla_curses_send_message_get_str,
     MRB_ARGS_ARG(1, 1));
   mrb_define_method(mrb, sci, "send_message_get_text", mrb_scintilla_curses_send_message_get_text,
-    MRB_ARGS_REQ(1));
+    MRB_ARGS_REQ(2));
   mrb_define_method(mrb, sci, "send_message_get_text_range", mrb_scintilla_curses_send_message_get_text_range,
     MRB_ARGS_REQ(3));
   mrb_define_method(mrb, sci, "send_message_get_curline", mrb_scintilla_curses_send_message_get_curline, MRB_ARGS_NONE());
