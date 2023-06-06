@@ -1,15 +1,16 @@
 MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
   spec.license = 'MIT'
   spec.authors = 'masahino'
-#  spec.add_dependency 'mruby-curses', :github => 'jbreeden/mruby-curses'
+  #  spec.add_dependency 'mruby-curses', :github => 'jbreeden/mruby-curses'
+  spec.add_dependency 'mruby-metaprog'
   spec.add_dependency 'mruby-scintilla-base', :github => 'masahino/mruby-scintilla-base'
-  spec.version = '5.3.4'
+  spec.version = '5.3.5'
 
   def spec.download_scintilla
     require 'open-uri'
-    scintilla_ver = '534'
+    scintilla_ver = '535'
     scinterm_ver = '4.1'
-    lexilla_ver = '524'
+    lexilla_ver = '525'
     scintilla_url = "https://scintilla.org/scintilla#{scintilla_ver}.tgz"
     scinterm_url = "https://github.com/orbitalquark/scinterm/archive/refs/tags/scinterm_#{scinterm_ver}.tar.gz"
     lexilla_url = "https://scintilla.org/lexilla#{lexilla_ver}.tgz"
@@ -25,7 +26,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
     lexilla_h = "#{lexilla_dir}/include/Lexilla.h"
 
     file scintilla_h do
-      URI.open(scintilla_url) do |http|
+      URI.parse(scintilla_url).open do |http|
         scintilla_tar = http.read
         FileUtils.mkdir_p scintilla_build_root
         IO.popen("tar xfz - -C #{filename scintilla_build_root}", 'wb') do |f|
