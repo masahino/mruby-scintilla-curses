@@ -9,7 +9,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
   def spec.download_scintilla
     require 'open-uri'
     scintilla_ver = '536'
-    scinterm_ver = '4.1'
+    scinterm_ver = '5.0'
     lexilla_ver = '526'
     scintilla_url = "https://scintilla.org/scintilla#{scintilla_ver}.tgz"
     scinterm_url = "https://github.com/orbitalquark/scinterm/archive/refs/tags/scinterm_#{scinterm_ver}.tar.gz"

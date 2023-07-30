@@ -227,16 +227,26 @@ mrb_scintilla_curses_refresh(mrb_state *mrb, mrb_value self)
   return mrb_nil_value();
 }
 
-/*scintilla_send_key (sci, key, shift, ctrl, alt) */
+/*scintilla_send_key (sci, key, modifiers) */
 static mrb_value
 mrb_scintilla_curses_send_key(mrb_state *mrb, mrb_value self)
 {
   Scintilla *sci = (Scintilla *)DATA_PTR(self);
-  mrb_int key;
+  mrb_int key, modifiers;
   mrb_bool shift, ctrl, alt;
 
   mrb_get_args(mrb, "ibbb", &key, &shift, &ctrl, &alt);
-  scintilla_send_key(sci, key, shift, ctrl, alt);
+  modifiers = 0;
+  if (shift) {
+    modifiers |= SCMOD_SHIFT;
+  }
+  if (ctrl) {
+    modifiers |= SCMOD_CTRL;
+  }
+  if (alt) {
+    modifiers |= SCMOD_ALT;
+  }
+  scintilla_send_key(sci, key, modifiers);
   return mrb_nil_value();
 }
 
@@ -483,16 +493,28 @@ mrb_scintilla_curses_send_message_set_pointer(mrb_state *mrb, mrb_value self)
   return mrb_fixnum_value(ret);
 }
 
+/* scintilla_send_mouse(sci, event, button, modifiers, y, x) */
 static mrb_value
 mrb_scintilla_curses_send_mouse(mrb_state *mrb, mrb_value self)
 {
   Scintilla *sci = (Scintilla *)DATA_PTR(self);
-  mrb_int event, button, y, x;
+  mrb_int event, button, y, x, modifiers;
   mrb_float time;
   mrb_bool shift, ctrl, alt, ret;
 
-  mrb_get_args(mrb, "ifiiibbb", &event, &time, &button, &y, &x, &shift, &ctrl, &alt);
-  ret = scintilla_send_mouse(sci, event, button, y, x, shift, ctrl, alt);
+  mrb_get_args(mrb, "ifiiibbb", &event, &time, &button, &y, &x, &shift, &ctrl,
+               &alt);
+  modifiers = 0;
+  if (shift) {
+    modifiers |= SCMOD_SHIFT;
+  }
+  if (ctrl) {
+    modifiers |= SCMOD_CTRL;
+  }
+  if (alt) {
+    modifiers |= SCMOD_ALT;
+  }
+  ret = scintilla_send_mouse(sci, event, button, modifiers, y, x);
 
   return (ret == TRUE)? mrb_true_value() : mrb_false_value();
 
