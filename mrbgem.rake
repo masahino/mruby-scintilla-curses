@@ -1,8 +1,6 @@
 MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
   spec.license = 'MIT'
   spec.authors = 'masahino'
-  #  spec.add_dependency 'mruby-curses', :github => 'jbreeden/mruby-curses'
-  spec.add_dependency 'mruby-metaprog'
   spec.add_dependency 'mruby-scintilla-base', :github => 'masahino/mruby-scintilla-base'
   spec.version = '5.3.8'
 
@@ -105,4 +103,6 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
     end
     file "#{dir}/src/scintilla-curses.c" => [:mruby_mrbmacs_curses_with_compile_option, scintilla_a, lexilla_h]
   end
+
+  spec.download_scintilla
 end
