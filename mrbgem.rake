@@ -2,13 +2,13 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
   spec.license = 'MIT'
   spec.authors = 'masahino'
   spec.add_dependency 'mruby-scintilla-base', :github => 'masahino/mruby-scintilla-base'
-  spec.version = '5.3.8'
+  spec.version = '5.4.1'
 
   def spec.download_scintilla
     require 'open-uri'
-    scintilla_ver = '538'
+    scintilla_ver = '541'
     scinterm_ver = '5.0'
-    lexilla_ver = '528'
+    lexilla_ver = '530'
     scintilla_url = "https://scintilla.org/scintilla#{scintilla_ver}.tgz"
     scinterm_url = "https://github.com/orbitalquark/scinterm/archive/refs/tags/scinterm_#{scinterm_ver}.tar.gz"
     lexilla_url = "https://scintilla.org/lexilla#{lexilla_ver}.tgz"
