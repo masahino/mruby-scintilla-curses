@@ -34,10 +34,10 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
     end
 
     file scintilla_curses_h do
-      URI.open(scinterm_url) do |http|
+      URI.parse(scinterm_url).open(ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
         scinterm_tar = http.read
         FileUtils.mkdir_p scintilla_curses_dir
-        IO.popen("tar xfz - -C #{filename scintilla_curses_dir} --strip-components 1", "wb") do |f|
+        IO.popen("tar xfz - -C #{filename scintilla_curses_dir} --strip-components 1", 'wb') do |f|
           f.write scinterm_tar
         end
       end
