@@ -24,7 +24,7 @@ MRuby::Gem::Specification.new('mruby-scintilla-curses') do |spec|
     lexilla_h = "#{lexilla_dir}/include/Lexilla.h"
 
     file scintilla_h do
-      URI.parse(scintilla_url).open do |http|
+      URI.parse(scintilla_url).open(ssl_verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
         scintilla_tar = http.read
         FileUtils.mkdir_p scintilla_build_root
         IO.popen("tar xfz - -C #{filename scintilla_build_root}", 'wb') do |f|
