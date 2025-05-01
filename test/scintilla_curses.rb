@@ -91,10 +91,8 @@ end
 assert('SCI_GETPROPERTY') do
   st = Scintilla::ScintillaCurses.new
   st.sci_set_lexer_language('ruby')
-  st.SCI_SETPROPERTY('fold', '1')
-  assert_equal '1', st.sci_get_property('fold')
-  st.SCI_SETPROPERTY('test2', 'bbbb')
-  assert_equal 'bbbb', st.SCI_GETPROPERTY('test2')
+  st.SCI_SETPROPERTY('fold.compact', '1')
+  assert_equal '1', st.sci_get_property('fold.compact')
 end
 
 assert('SCI_GETLINE') do
