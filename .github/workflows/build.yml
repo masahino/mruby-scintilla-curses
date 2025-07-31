@@ -3,8 +3,8 @@ name: Build & Test
 on: [push, pull_request]
 
 jobs:
-  Ubuntu-2004-gcc:
-    runs-on: ubuntu-20.04
+  Ubuntu-2204-gcc:
+    runs-on: ubuntu-22.04
     timeout-minutes: 10
     env:
       CC: gcc
