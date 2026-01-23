@@ -9,7 +9,7 @@ jobs:
     env:
       CC: gcc
     steps:
-      - uses: actions/checkout@v6.0.1
+      - uses: actions/checkout@v6.0.2
       - name: Ruby version
         run: ruby -v
       - name: Compiler version
